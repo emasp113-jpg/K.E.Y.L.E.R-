@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="460" viewBox="0 0 340 230" role="img">
+<title>KEYLER</title>
+<rect x="0.5" y="0.5" width="339" height="229" rx="8" fill="#020b1a" stroke="#3F8F3A" stroke-opacity=".4" stroke-width=".5"/>
+<path d="M14 14H32M14 14V32M326 14H308M326 14V32M14 216H32M14 216V198M326 216H308M326 216V198" fill="none" stroke="#3F8F3A" stroke-width="1" stroke-opacity=".7"/>
+<circle cx="170" cy="85" r="62" fill="#3F8F3A" fill-opacity=".08"/>
+<circle cx="170" cy="85" r="58" fill="none" stroke="#3F8F3A" stroke-opacity=".35" stroke-width=".5"/>
+<circle cx="170" cy="85" r="52" fill="none" stroke="#3F8F3A" stroke-opacity=".6" stroke-width=".5"/>
+<circle cx="170" cy="85" r="42" fill="none" stroke="#3F8F3A" stroke-opacity=".8" stroke-width="7" stroke-dasharray="1.2 2.1"/>
+<circle cx="170" cy="85" r="32" fill="none" stroke="#3F8F3A" stroke-opacity=".8" stroke-width="1"/>
+<circle cx="170" cy="85" r="48" fill="none" stroke="#3F8F3A" stroke-width="3" stroke-dasharray="75 227" transform="rotate(-150 170 85)"/>
+<circle cx="170" cy="85" r="48" fill="none" stroke="#A9D8A0" stroke-width="3" stroke-dasharray="40 262" transform="rotate(90 170 85)"/>
+<path d="M98 85H114M226 85H242M170 21V33M170 137V149" stroke="#3F8F3A" stroke-opacity=".6" stroke-width=".5" fill="none"/>
+<circle cx="170" cy="85" r="16" fill="#3F8F3A" fill-opacity=".28"/>
+<circle cx="162" cy="85" r="6" fill="none" stroke="#E6F5E2" stroke-width="3"/><path d="M168 85H186M178 85V92M185 85V90" fill="none" stroke="#E6F5E2" stroke-width="3" stroke-linecap="round"/>
+<text x="170" y="168" text-anchor="middle" font-family="Orbitron, 'Segoe UI', Arial, sans-serif" font-size="22" letter-spacing="6" fill="#ffffff">KEYLER</text>
+<text x="170" y="192" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11" letter-spacing="3" fill="#3F8F3A">LA LLAVE DE TUS IDEAS</text>
+<line x1="110" y1="207" x2="230" y2="207" stroke="#3F8F3A" stroke-opacity=".4" stroke-width=".5"/>
+<rect x="160" y="205.5" width="20" height="3" fill="#3F8F3A"/>
+</svg>
