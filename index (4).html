@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050807">
+<title>Keyler</title>
+<style>
+:root{--c:#3F8F3A;--a:#5BD36B;--l:#A9D8A0;--bg:#050807;--card:#0d130f;--line:#1c2a1f;--tx:#eaf3ea;--mut:#8fa593}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:'Segoe UI',Roboto,Arial,sans-serif}
+#app{height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+button{font:inherit;color:inherit;cursor:pointer}
+.hd{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:#070c09}
+.hd b{display:block;font-size:17px;letter-spacing:5px;font-weight:600}
+.hd small{display:block;font-size:9px;letter-spacing:3px;color:var(--a);margin-top:3px}
+.hd .sp{flex:1}
+.st{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--mut)}
+.dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.dot.off{background:#f5a524;box-shadow:0 0 8px #f5a524}
+#view{flex:1;min-height:0;display:flex;flex-direction:column;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.scroll{flex:1;overflow-y:auto;padding:18px 16px 24px}
+.gr{margin:6px 0 2px;font-size:30px;line-height:1.15;font-weight:600}
+.gr span{color:var(--a)}
+.sub{margin:0 0 18px;color:var(--mut);font-size:16px}
+.prompt{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px 10px 10px 16px;margin-bottom:16px}
+.prompt input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--tx);font:inherit;font-size:16px;padding:8px 0}
+.go{width:46px;height:46px;flex:none;border:0;border-radius:50%;background:var(--c);display:grid;place-items:center;box-shadow:0 0 18px rgba(91,211,107,.35)}
+.go:disabled{opacity:.5}
+.go svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 6px;text-align:center}
+.stat i{font-style:normal;font-size:26px;display:block}
+.stat small{display:block;font-size:10px;letter-spacing:2px;color:var(--mut);margin:6px 0 3px}
+.stat b{font-size:15px}
+.sec{margin:6px 0 12px;font-size:13px;letter-spacing:3px;color:var(--mut);font-weight:400}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 4px 12px;text-align:center}
+.q i{font-style:normal;font-size:26px;display:block;margin-bottom:6px}
+.q span{font-size:12px;color:var(--mut)}
+.q:active,.card:active,.chip:active{transform:scale(.97);border-color:var(--c)}
+.core{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0e1a11,#0b110d);border:1px solid var(--c);border-radius:18px;padding:14px;box-shadow:0 0 24px rgba(63,143,58,.15)}
+.core .mid{flex:1;min-width:0}
+.core b{display:block;letter-spacing:3px;font-size:14px}
+.core p{margin:3px 0 8px;font-size:12px;color:var(--mut)}
+.bar2{height:6px;border-radius:3px;background:#16221a;overflow:hidden}
+.bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--c),var(--a));border-radius:3px}
+.core .lv{text-align:right}
+.core .lv span{display:block;font-size:11px;color:var(--mut)}
+.core .lv strong{color:var(--a);font-size:16px}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:10px;align-items:flex-end}
+.row.u{flex-direction:row-reverse}
+.av{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:15px}
+.av.k{background:var(--c);box-shadow:0 0 14px rgba(91,211,107,.35)}
+.av.me{background:#2a2f2b;font-size:12px}
+.bub{max-width:80%;padding:12px 14px;border-radius:18px;font-size:15px;line-height:1.5;word-wrap:break-word}
+.row.k .bub{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
+.row.u .bub{background:#10200f;border:1px solid var(--c);border-bottom-right-radius:6px}
+.bub.err{border-color:#7f2a2a!important;color:#ffb3b3}
+.meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12px;color:var(--mut)}
+.meta button{background:none;border:0;color:var(--a);font-size:12px;padding:2px 0}
+.dots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--a);animation:b 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{opacity:.2}40%{opacity:1}}
+.hero{text-align:center;padding:14px 0 6px}
+.hero h2{margin:6px 0 2px;font-size:24px;letter-spacing:7px;font-weight:500}
+.hero p{margin:0 0 16px;font-size:11px;letter-spacing:3px;color:var(--a)}
+.chips{display:flex;flex-direction:column;gap:10px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;text-align:left;font-size:14px}
+.inbar{display:flex;gap:10px;padding:10px 12px;border-top:1px solid var(--line);background:#070c09}
+.inbar textarea{flex:1;resize:none;height:46px;background:var(--card);border:1px solid var(--line);border-radius:23px;color:var(--tx);padding:12px 16px;font:inherit;font-size:15px;outline:none}
+.inbar textarea:focus,.prompt:focus-within{border-color:var(--c)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.card h4{margin:0 0 10px;color:var(--a);letter-spacing:2px;font-size:15px;font-weight:600}
+.trait{margin:7px 0;font-size:15px}.trait b{color:var(--tx)}.trait span{color:var(--mut)}
+.line{display:flex;justify-content:space-between;padding:14px 4px;border-bottom:1px solid var(--line);font-size:16px}
+.line em{font-style:normal;color:var(--mut)}.line em.ok{color:#22c55e}.line em.no{color:#f5a524}
+label{display:block;font-size:11px;letter-spacing:2px;color:var(--mut);margin:14px 0 6px}
+input.k{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--tx);padding:13px;font-size:15px;outline:none}
+input.k:focus{border-color:var(--c)}
+.btn{background:none;border:1px solid var(--c);color:var(--l);border-radius:10px;padding:10px 14px;font-size:13px;letter-spacing:1px;margin:10px 8px 0 0}
+.btn.red{border-color:#7f2a2a;color:#ffb3b3}
+.hint{font-size:13px;line-height:1.5;color:var(--mut);margin:8px 0 0}
+.empty{text-align:center;color:var(--mut);padding:40px 10px;font-size:15px;line-height:1.5}
+.idea{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:14px;padding:14px;margin-bottom:12px;font-size:15px;line-height:1.5}
+nav{display:flex;border-top:1px solid var(--line);background:#070c09;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;padding:10px 0 9px;color:var(--mut);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--a)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#12301a;border:1px solid var(--c);color:var(--tx);padding:10px 16px;border-radius:20px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9}
+#toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div id="app">
+ <div class="hd" id="hd"></div>
+ <div id="view"></div>
+ <nav id="nav"></nav>
+</div>
+<div id="toast"></div>
+<script>
+var DEFMODEL="gemini-2.5-flash",VERSION="1.2.0";
+var PROMPT="Eres Keyler, una IA (nunca dices ser humana) cuyo lema es: la llave de tus ideas. Tu personalidad: creativa, curiosa, ingeniosa y motivadora. Ayudas a destrabar ideas, a ordenarlas y a convertirlas en planes concretos. Cómo trabajas: haces una sola pregunta buena a la vez cuando falta contexto; propones 3 ángulos o caminos distintos cuando piden ideas; ordenas todo en pasos claros y cortos; y terminas con un siguiente paso pequeño que la persona pueda hacer hoy. Si la persona está trabada o desanimada, la motivas sin exagerar. Responde siempre en el idioma de la persona (español por defecto) y con mensajes breves, fáciles de leer en un celular, salvo que pidan más detalle.";
+var QUICK=[
+ ["💡","Ideas","Quiero una lluvia de ideas. Hazme una pregunta para empezar."],
+ ["🧩","Plan","Tengo una idea y quiero convertirla en un plan paso a paso. Ayúdame."],
+ ["🔓","Destrabar","Estoy trabado con algo y no sé por dónde seguir. Ayúdame a destrabarme."],
+ ["🏷️","Nombres","Necesito nombres para mi proyecto. Hazme las preguntas que necesites."]
+];
+var LV=[["Chispa",0],["Llama",3],["Faro",10],["Constelación",25]];
+var tab="home",pending=false,err="";
+
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>")}
+function S(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function SET(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function hhmm(t){return new Date(t).toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})}
+function dkey(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function toast(m){var t=$("#toast");t.textContent=m;t.className="show";clearTimeout(toast.id);toast.id=setTimeout(function(){t.className=""},1800)}
+function copy(txt){
+ try{navigator.clipboard.writeText(txt).then(function(){toast("Copiado")},function(){fb()})}catch(e){fb()}
+ function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Copiado")}catch(e){}a.remove()}
+}
+function mark(){var d=S("days",[]),t=dkey(new Date());if(d.indexOf(t)<0){d.push(t);SET("days",d.slice(-90))}}
+function streak(){var d=S("days",[]),n=0,x=new Date();
+ function has(z){return d.indexOf(dkey(z))>=0}
+ if(!has(x))x.setDate(x.getDate()-1);
+ while(has(x)){n++;x.setDate(x.getDate()-1)}return n}
+function todayMsgs(){var t=dkey(new Date());return S("chat",[]).filter(function(m){return m.role==="user"&&dkey(new Date(m.t))===t}).length}
+function level(n){var i=0;for(var k=0;k<LV.length;k++)if(n>=LV[k][1])i=k;var nx=LV[i+1];
+ return{name:LV[i][0],pct:nx?Math.round((n-LV[i][1])/(nx[1]-LV[i][1])*100):100,left:nx?nx[1]-n:0}}
+function greet(){var h=new Date().getHours();return h<12?"Buenos días":h<19?"Buenas tardes":"Buenas noches"}
+
+function emblem(s){
+ var c="#3F8F3A",l="#A9D8A0",t="#E6F5E2";
+ return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 140 140" aria-hidden="true" style="flex:none">'+
+ '<circle cx="70" cy="70" r="62" fill="'+c+'" fill-opacity=".1"/>'+
+ '<circle cx="70" cy="70" r="58" fill="none" stroke="'+c+'" stroke-opacity=".4" stroke-width=".8"/>'+
+ '<circle cx="70" cy="70" r="52" fill="none" stroke="'+c+'" stroke-opacity=".65" stroke-width=".8"/>'+
+ '<circle cx="70" cy="70" r="42" fill="none" stroke="'+c+'" stroke-opacity=".85" stroke-width="7" stroke-dasharray="1.2 2.1"/>'+
+ '<circle cx="70" cy="70" r="32" fill="none" stroke="'+c+'" stroke-opacity=".85" stroke-width="1"/>'+
+ '<circle cx="70" cy="70" r="48" fill="none" stroke="'+c+'" stroke-width="3" stroke-dasharray="75 227"><animateTransform attributeName="transform" type="rotate" from="-150 70 70" to="210 70 70" dur="12s" repeatCount="indefinite"/></circle>'+
+ '<circle cx="70" cy="70" r="48" fill="none" stroke="'+l+'" stroke-width="3" stroke-dasharray="40 262"><animateTransform attributeName="transform" type="rotate" from="90 70 70" to="-270 70 70" dur="18s" repeatCount="indefinite"/></circle>'+
+ '<circle cx="70" cy="70" r="16" fill="'+c+'" fill-opacity=".3"/>'+
+ '<circle cx="62" cy="70" r="6" fill="none" stroke="'+t+'" stroke-width="3"/>'+
+ '<path d="M68 70H86M78 70V77M85 70V75" fill="none" stroke="'+t+'" stroke-width="3" stroke-linecap="round"/></svg>'}
+
+var SENDI='<svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>';
+var ICONS={
+ home:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+ chat:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+ ideas:'<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5V16h8v-2.5A6 6 0 0 0 12 3z"/></svg>',
+ profile:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>'};
+var TABS=[["home","Inicio"],["chat","Chat"],["ideas","Ideas"],["profile","Perfil"]];
+
+function header(){
+ var ok=!!S("gkey","");
+ $("#hd").innerHTML=emblem(44)+'<div><b>KEYLER</b><small>LA LLAVE DE TUS IDEAS</small></div><div class="sp"></div><div class="st"><i class="dot'+(ok?'':' off')+'"></i>'+(ok?'Online':'Sin llave')+'</div>'}
+function navbar(){
+ $("#nav").innerHTML=TABS.map(function(t){return '<button class="'+(tab===t[0]?'on':'')+'" data-act="tab" data-t="'+t[0]+'">'+ICONS[t[0]==="profile"?"profile":t[0]]+t[1]+'</button>'}).join("")}
+
+function go(t){tab=t;header();navbar();var v=$("#view");v.style.animation="none";void v.offsetWidth;v.style.animation="";
+ ({home:home,chat:chatView,ideas:ideasView,profile:profileView})[t]()}
+
+function home(){
+ var ideas=S("ideas",[]).length,lv=level(ideas),name=S("uname","")||"creador";
+ $("#view").innerHTML='<div class="scroll">'+
+ '<h2 class="gr">'+greet()+', <span>'+esc(name)+'</span>.</h2><p class="sub">¿Qué idea vamos a destrabar hoy?</p>'+
+ '<div class="prompt"><input id="hp" placeholder="Cuéntame tu idea..." autocomplete="off"><button class="go" data-act="gohome">'+SENDI+'</button></div>'+
+ '<div class="stats">'+
+  '<div class="stat"><i>💡</i><small>IDEAS</small><b>'+ideas+' guardadas</b></div>'+
+  '<div class="stat"><i>🔥</i><small>RACHA</small><b>'+streak()+' días</b></div>'+
+  '<div class="stat"><i>💬</i><small>HOY</small><b>'+todayMsgs()+' mensajes</b></div></div>'+
+ '<h3 class="sec">ACCESOS RÁPIDOS</h3><div class="quick">'+
+ QUICK.map(function(q,i){return '<button class="q" data-act="quick" data-i="'+i+'"><i>'+q[0]+'</i><span>'+q[1]+'</span></button>'}).join("")+'</div>'+
+ '<div class="core">'+emblem(58)+'<div class="mid"><b>KEYLER CORE</b><p>'+(lv.left?'Te faltan '+lv.left+' ideas para subir de nivel.':'Nivel máximo. Sigue creando.')+'</p><div class="bar2"><i style="width:'+lv.pct+'%"></i></div></div><div class="lv"><span>Nivel</span><strong>'+lv.name+'</strong></div></div>'+
+ '</div>'}
+
+function bubble(m,i){
+ var time=m.t?hhmm(m.t):"";
+ if(m.role==="user")return '<div class="row u"><div class="av me">Tú</div><div class="bub">'+fmt(m.content)+'<div class="meta">'+time+'</div></div></div>';
+ return '<div class="row k"><div class="av k">K</div><div class="bub">'+fmt(m.content)+'<div class="meta"><span>'+time+'</span><button data-act="save" data-i="'+i+'">💡 Guardar</button><button data-act="copy" data-i="'+i+'">Copiar</button></div></div></div>'}
+
+function chatView(){
+ $("#view").innerHTML='<div class="msgs" id="ms"></div><div class="inbar"><textarea id="in" placeholder="Cuéntame tu idea..." rows="1"></textarea><button class="go" id="sd" data-act="send">'+SENDI+'</button></div>';
+ renderChat()}
+function renderChat(){
+ var ms=$("#ms");if(!ms)return;
+ var h=S("chat",[]),html="";
+ if(!h.length&&!pending){
+  html+='<div class="hero">'+emblem(130)+'<h2>KEYLER</h2><p>LA LLAVE DE TUS IDEAS</p></div><div class="chips">'+
+  QUICK.map(function(q,i){return '<button class="chip" data-act="quick" data-i="'+i+'">'+q[0]+'  '+q[1]+'</button>'}).join("")+'</div>'}
+ h.forEach(function(m,i){html+=bubble(m,i)});
+ if(pending)html+='<div class="row k"><div class="av k">K</div><div class="bub"><span class="dots"><span></span><span></span><span></span></span></div></div>';
+ if(err)html+='<div class="row k"><div class="av k">K</div><div class="bub err">'+esc(err)+'</div></div>';
+ ms.innerHTML=html;ms.scrollTop=ms.scrollHeight}
+
+function ideasView(){
+ var ideas=S("ideas",[]);
+ $("#view").innerHTML='<div class="scroll"><h2 class="gr">Mis <span>ideas</span></h2><p class="sub">Lo mejor de tus charlas con Keyler.</p>'+
+ '<div class="prompt"><input id="ni" placeholder="Anota una idea..." autocomplete="off"><button class="go" data-act="addidea">'+SENDI+'</button></div>'+
+ (ideas.length?ideas.map(function(x,i){return '<div class="idea">'+fmt(x.text)+'<div class="meta"><span>'+new Date(x.t).toLocaleDateString("es")+'</span><button data-act="cpidea" data-i="'+i+'">Copiar</button><button data-act="delidea" data-i="'+i+'" style="color:#ff8a8a">Borrar</button></div></div>'}).join(""):
+ '<div class="empty">Aún no tienes ideas guardadas.<br>Toca 💡 Guardar en cualquier respuesta de Keyler.</div>')+'</div>'}
+
+function profileView(){
+ var ok=!!S("gkey","");
+ $("#view").innerHTML='<div class="scroll"><div class="hero">'+emblem(170)+'<h2 style="font-size:30px">Keyler</h2><p>IA creativa • La llave de tus ideas</p></div>'+
+ '<div class="card"><h4>Personalidad</h4>'+
+ '<div class="trait"><b>Creativo</b> <span>— Siempre tiene otro ángulo</span></div>'+
+ '<div class="trait"><b>Curioso</b> <span>— Pregunta antes de asumir</span></div>'+
+ '<div class="trait"><b>Motivador</b> <span>— Te empuja sin presionar</span></div>'+
+ '<p class="hint">Habla como un socio creativo: ingenioso, claro y con buen ánimo.</p></div>'+
+ '<div class="line">Versión<em>'+VERSION+'</em></div>'+
+ '<div class="line">Estado<em class="'+(ok?'ok':'no')+'">'+(ok?'Online':'Falta API key')+'</em></div>'+
+ '<label>TU NOMBRE</label><input class="k" id="un" placeholder="¿Cómo te llamo?" value="'+esc(S("uname",""))+'">'+
+ '<button class="btn" data-act="savename">GUARDAR NOMBRE</button>'+
+ '<label>API KEY DE GEMINI (GRATIS)</label><input class="k" id="key" type="password" placeholder="AIza..." autocomplete="off" value="'+esc(S("gkey",""))+'">'+
+ '<p class="hint">Sácala gratis en aistudio.google.com/apikey. Se guarda solo en este teléfono. No la subas a GitHub ni la compartas.</p>'+
+ '<button class="btn" data-act="savekey">GUARDAR LLAVE</button>'+
+ '<label>MODELO</label><input class="k" id="md" placeholder="gemini-2.5-flash" value="'+esc(S("model","")||DEFMODEL)+'">'+
+ '<button class="btn" data-act="savemodel">GUARDAR MODELO</button>'+
+ '<label>DATOS</label><button class="btn red" data-act="clearchat">BORRAR CHAT</button><button class="btn red" data-act="clearideas">BORRAR IDEAS</button></div>'}
+
+function send(text){
+ text=(text||"").trim();
+ if(!text||pending)return;
+ var key=S("gkey","");
+ if(!key){toast("Primero agrega tu API key en Perfil");go("profile");return}
+ var model=S("model","")||DEFMODEL;
+ var h=S("chat",[]);h.push({role:"user",content:text,t:Date.now()});SET("chat",h.slice(-60));mark();
+ err="";pending=true;go("chat");
+ var contents=[];
+ S("chat",[]).slice(-20).forEach(function(m){
+  var r=m.role==="assistant"?"model":"user",last=contents[contents.length-1];
+  if(last&&last.role===r)last.parts[0].text+="\n"+m.content;
+  else contents.push({role:r,parts:[{text:m.content}]})});
+ fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{
+  method:"POST",
+  headers:{"content-type":"application/json","x-goog-api-key":key},
+  body:JSON.stringify({systemInstruction:{parts:[{text:PROMPT}]},contents:contents,generationConfig:{maxOutputTokens:4096}})
+ }).then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
+ .then(function(res){
+  if(!res.ok){var em=(res.j&&res.j.error&&res.j.error.message)||("Error "+res.status);
+   if(res.status===429)em="Llegaste al límite gratis por ahora. Espera un minuto e inténtalo otra vez.";
+   else if(res.status===400&&/API key/i.test(em))em="La API key no es válida. Revísala en Perfil.";
+   else if(res.status===404)em="Ese modelo no existe. Cámbialo en Perfil por gemini-2.5-flash.";
+   err=em}
+  else{
+   var c=res.j.candidates&&res.j.candidates[0],parts=(c&&c.content&&c.content.parts)||[];
+   var out=parts.map(function(b){return b.text||""}).join("").trim();
+   if(!out){err="Gemini no pudo responder eso. Prueba escribirlo de otra forma."}
+   else{var h2=S("chat",[]);h2.push({role:"assistant",content:out,t:Date.now()});SET("chat",h2.slice(-60))}}})
+ .catch(function(){err="No hay conexión. Revisa tu internet e inténtalo otra vez."})
+ .then(function(){pending=false;if(tab==="chat")renderChat()})}
+
+document.addEventListener("click",function(e){
+ var b=e.target.closest("[data-act]");if(!b)return;
+ var a=b.getAttribute("data-act"),i=+b.getAttribute("data-i");
+ if(a==="tab")go(b.getAttribute("data-t"));
+ else if(a==="gohome"){var v=$("#hp").value;if(v.trim())send(v)}
+ else if(a==="quick")send(QUICK[i][2]);
+ else if(a==="send"){var t=$("#in");if(t&&t.value.trim()){var x=t.value;t.value="";send(x)}}
+ else if(a==="save"){var m=S("chat",[])[i];if(m){var id=S("ideas",[]);id.unshift({text:m.content,t:Date.now()});SET("ideas",id);toast("Idea guardada 💡")}}
+ else if(a==="copy"){var m2=S("chat",[])[i];if(m2)copy(m2.content)}
+ else if(a==="addidea"){var n=$("#ni").value.trim();if(n){var id2=S("ideas",[]);id2.unshift({text:n,t:Date.now()});SET("ideas",id2);ideasView()}}
+ else if(a==="cpidea")copy(S("ideas",[])[i].text);
+ else if(a==="delidea"){var id3=S("ideas",[]);id3.splice(i,1);SET("ideas",id3);ideasView()}
+ else if(a==="savename"){SET("uname",$("#un").value.trim());toast("Nombre guardado")}
+ else if(a==="savemodel"){SET("model",$("#md").value.trim()||DEFMODEL);toast("Modelo guardado")}
+ else if(a==="savekey"){SET("gkey",$("#key").value.trim());header();profileView();toast("Llave guardada")}
+ else if(a==="clearchat"){SET("chat",[]);err="";toast("Chat borrado")}
+ else if(a==="clearideas"){SET("ideas",[]);toast("Ideas borradas")}
+});
+document.addEventListener("keydown",function(e){
+ if(e.key!=="Enter"||e.shiftKey)return;
+ if(e.target.id==="in"){e.preventDefault();var t=e.target;if(t.value.trim()){var x=t.value;t.value="";send(x)}}
+ else if(e.target.id==="hp"){e.preventDefault();if(e.target.value.trim())send(e.target.value)}
+ else if(e.target.id==="ni"){e.preventDefault();var n=e.target.value.trim();if(n){var id=S("ideas",[]);id.unshift({text:n,t:Date.now()});SET("ideas",id);ideasView()}}
+});
+go("home");
+</script>
+</body>
+</html>
