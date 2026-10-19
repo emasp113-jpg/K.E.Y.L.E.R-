@@ -1,0 +1,9 @@
+{
+  "appId": "com.keyler.app",
+  "appName": "Keyler",
+  "webDir": "www",
+  "backgroundColor": "#050807",
+  "plugins": {
+    "CapacitorHttp": { "enabled": true }
+  }
+}
